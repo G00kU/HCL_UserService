@@ -6,12 +6,14 @@ import {
     User,
     Users,
     MapPin,
+    Plus
 } from "lucide-react";
 
 const ListControl = ({
     users = [],
     onEdit,
     onDelete,
+    onAdd
 }) => {
     const [search, setSearch] = useState("");
 
@@ -109,7 +111,36 @@ const ListControl = ({
                                 ? "User"
                                 : "Users"}
                         </span>
+                        <button
+                            type="button"
+                            onClick={() => onAdd?.()}
+                            className="
+            flex
+            items-center
+            gap-2
+            rounded-lg
+            bg-[#FFC20E]
+            px-4
+            py-2
+            text-sm
+            font-semibold
+            text-slate-900
+            shadow-sm
+            transition
+            hover:bg-[#E6AE00]
+            focus:outline-none
+            focus:ring-4
+            focus:ring-[#FFC20E]/20
+        "
+                        >
+                            <Plus size={18} />
+
+                            <span>
+                                Add User
+                            </span>
+                        </button>
                     </div>
+
                 </div>
                 <div
                     className="
@@ -163,11 +194,6 @@ const ListControl = ({
                         />
                     </div>
                 </div>
-
-                {/* ---------------------------------
-                    User List
-                ---------------------------------- */}
-
                 <div
                     className="
                         overflow-hidden
@@ -342,8 +368,6 @@ const ListControl = ({
                                     >
                                         {user.city}
                                     </div>
-
-                                    {/* Location */}
                                     <div
                                         className="
                                             col-span-3
@@ -361,8 +385,6 @@ const ListControl = ({
                                             {user.state}
                                         </span>
                                     </div>
-
-                                    {/* Actions */}
                                     <div
                                         className="
                                             col-span-2
@@ -371,7 +393,6 @@ const ListControl = ({
                                             gap-1
                                         "
                                     >
-                                        {/* Edit */}
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -389,8 +410,6 @@ const ListControl = ({
                                         >
                                             <Pencil size={17} />
                                         </button>
-
-                                        {/* Delete */}
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -410,11 +429,6 @@ const ListControl = ({
                                         </button>
                                     </div>
                                 </div>
-
-                                {/* ---------------------------------
-                                    Mobile
-                                ---------------------------------- */}
-
                                 <div
                                     className="
                                         flex
@@ -423,7 +437,6 @@ const ListControl = ({
                                         md:hidden
                                     "
                                 >
-                                    {/* Avatar */}
                                     <div
                                         className="
                                             flex
@@ -442,8 +455,6 @@ const ListControl = ({
                                             .charAt(0)
                                             .toUpperCase()}
                                     </div>
-
-                                    {/* User Details */}
                                     <div
                                         className="
                                             min-w-0
@@ -482,11 +493,7 @@ const ListControl = ({
                                             {user.pincode}
                                         </p>
                                     </div>
-
-                                    {/* Mobile Actions */}
                                     <div className="flex gap-1">
-
-                                        {/* Edit */}
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -504,8 +511,6 @@ const ListControl = ({
                                         >
                                             <Pencil size={17} />
                                         </button>
-
-                                        {/* Delete */}
                                         <button
                                             type="button"
                                             onClick={() =>
@@ -527,11 +532,6 @@ const ListControl = ({
                                 </div>
                             </div>
                         ))}
-
-                        {/* ---------------------------------
-                            Empty State
-                        ---------------------------------- */}
-
                         {filteredUsers.length === 0 && (
                             <div className="px-6 py-16 text-center">
 
@@ -576,11 +576,6 @@ const ListControl = ({
                         )}
                     </div>
                 </div>
-
-                {/* ---------------------------------
-                    Result Count
-                ---------------------------------- */}
-
                 {filteredUsers.length > 0 && (
                     <div
                         className="

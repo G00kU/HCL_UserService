@@ -6,15 +6,13 @@ import {
     ArrowRight,
     UserPlus,
 } from "lucide-react";
-
+import { useNavigate } from "react-router-dom";
 import Button from "../Components/UI/button";
 import Card from "../Components/UI/card";
 import Input from "../Components/UI/input";
-
-
-/* -----------------------------------------
-   Validation Schema
------------------------------------------- */
+import useAuth from "../Hooks/useAuth";
+import RegisterUserModal from "./RegisterUser";
+import { useToast } from "../Components/UI/Toast";
 
 const loginSchema = z.object({
     email: z
@@ -29,35 +27,25 @@ const loginSchema = z.object({
 });
 
 
-/* -----------------------------------------
-   Login Component
------------------------------------------- */
-
 const Login = () => {
 
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
-
+    const { login } = useAuth()
     const [errors, setErrors] = useState({});
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
-
-    /* -----------------------------------------
-       Handle Input Change
-    ------------------------------------------ */
-
+    const [showRegisterModal, setShowRegisterModal] = useState(false);
+    const toast = useToast();
+    const navigate = useNavigate();
     const handleChange = (event) => {
-
         const { name, value } = event.target;
-
         setFormData((previous) => ({
             ...previous,
             [name]: value,
         }));
-
         if (errors[name]) {
 
             setErrors((previous) => ({
@@ -69,100 +57,41 @@ const Login = () => {
     };
 
 
-    /* -----------------------------------------
-       Handle Submit
-    ------------------------------------------ */
-
     const handleSubmit = async (event) => {
-
         event.preventDefault();
-
         const result = loginSchema.safeParse(formData);
-
-
-        /* Validation */
         if (!result.success) {
-
             const validationErrors = {};
-
             result.error.issues.forEach((issue) => {
-
                 const field = issue.path[0];
-
                 if (!validationErrors[field]) {
                     validationErrors[field] = issue.message;
                 }
-
             });
-
             setErrors(validationErrors);
-
             return;
         }
-
-
         setErrors({});
         setIsLoading(true);
-
-
         try {
-
-            /*
-                Connect your .NET API here.
-
-                Example:
-
-                const response = await fetch(
-                    "https://localhost:7000/api/auth/login",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(result.data),
-                    }
-                );
-
-                const data = await response.json();
-            */
-
-
-            await new Promise((resolve) =>
-                setTimeout(resolve, 1000)
-            );
-
-            console.log("Login data:", result.data);
-
+            await login(result.data.email, result.data.password);
+            navigate("/user");
         } catch (error) {
-
-            console.error(
-                "Login failed:",
-                error
+            toast.error(
+                "Login failed: " +
+                error.response.data.message
             );
-
         } finally {
-
             setIsLoading(false);
-
         }
     };
 
 
-    /* -----------------------------------------
-       Register
-    ------------------------------------------ */
-
     const handleRegister = () => {
+        setShowRegisterModal(true);
 
-        console.log("Register clicked");
-
-        // navigate("/register");
     };
 
-
-    /* -----------------------------------------
-       UI
-    ------------------------------------------ */
 
     return (
         <div
@@ -177,14 +106,7 @@ const Login = () => {
                 lg:px-8
             "
         >
-
-            {/* ---------------------------------
-                Background Decorations
-            ---------------------------------- */}
-
             <div className="pointer-events-none absolute inset-0">
-
-                {/* Yellow glow */}
                 <div
                     className="
                         absolute
@@ -198,7 +120,6 @@ const Login = () => {
                     "
                 />
 
-                {/* Second yellow glow */}
                 <div
                     className="
                         absolute
@@ -212,7 +133,6 @@ const Login = () => {
                     "
                 />
 
-                {/* Center glow */}
                 <div
                     className="
                         absolute
@@ -229,12 +149,6 @@ const Login = () => {
                 />
 
             </div>
-
-
-            {/* ---------------------------------
-                Main
-            ---------------------------------- */}
-
             <div
                 className="
                     relative
@@ -267,11 +181,6 @@ const Login = () => {
                             lg:grid-cols-2
                         "
                     >
-
-                        {/* =================================
-                            LEFT SIDE
-                        ================================== */}
-
                         <div
                             className="
                                 relative
@@ -286,8 +195,6 @@ const Login = () => {
                                 lg:p-12
                             "
                         >
-
-                            {/* Decorative circle */}
                             <div
                                 className="
                                     absolute
@@ -313,8 +220,6 @@ const Login = () => {
                                     border-[#FFC20E]/20
                                 "
                             />
-
-                            {/* Yellow glow */}
                             <div
                                 className="
                                     absolute
@@ -327,12 +232,6 @@ const Login = () => {
                                     blur-2xl
                                 "
                             />
-
-
-                            {/* ---------------------------------
-                                Logo
-                            ---------------------------------- */}
-
                             <div className="relative z-10">
 
                                 <div className="flex items-center gap-3">
@@ -365,17 +264,8 @@ const Login = () => {
                                     </span>
 
                                 </div>
-
                             </div>
-
-
-                            {/* ---------------------------------
-                                Center Content
-                            ---------------------------------- */}
-
                             <div className="relative z-10 max-w-lg">
-
-                                {/* Status */}
                                 <div
                                     className="
                                         mb-5
@@ -392,7 +282,6 @@ const Login = () => {
                                         backdrop-blur
                                     "
                                 >
-
                                     <span
                                         className="
                                             mr-2
@@ -402,13 +291,8 @@ const Login = () => {
                                             bg-[#FFC20E]
                                         "
                                     />
-
                                     Secure authentication
-
                                 </div>
-
-
-                                {/* Heading */}
                                 <h2
                                     className="
                                         text-4xl
@@ -418,7 +302,6 @@ const Login = () => {
                                     "
                                 >
                                     Everything you need,
-
                                     <span
                                         className="
                                             block
@@ -427,11 +310,7 @@ const Login = () => {
                                     >
                                         in one secure place.
                                     </span>
-
                                 </h2>
-
-
-                                {/* Description */}
                                 <p
                                     className="
                                         mt-6
@@ -445,14 +324,7 @@ const Login = () => {
                                     services with a secure and seamless
                                     authentication experience.
                                 </p>
-
                             </div>
-
-
-                            {/* ---------------------------------
-                                Footer
-                            ---------------------------------- */}
-
                             <div
                                 className="
                                     relative
@@ -463,14 +335,7 @@ const Login = () => {
                             >
                                 © 2026 UserService
                             </div>
-
                         </div>
-
-
-                        {/* =================================
-                            RIGHT SIDE
-                        ================================== */}
-
                         <div
                             className="
                                 flex
@@ -481,8 +346,6 @@ const Login = () => {
                                 lg:p-12
                             "
                         >
-
-                            {/* Mobile Logo */}
                             <div
                                 className="
                                     mb-8
@@ -519,12 +382,6 @@ const Login = () => {
                                 </span>
 
                             </div>
-
-
-                            {/* ---------------------------------
-                                Heading
-                            ---------------------------------- */}
-
                             <div className="mb-8">
 
                                 <h1
@@ -550,18 +407,10 @@ const Login = () => {
                                 </p>
 
                             </div>
-
-
-                            {/* ---------------------------------
-                                Form
-                            ---------------------------------- */}
-
                             <form
                                 onSubmit={handleSubmit}
                                 className="space-y-5"
                             >
-
-                                {/* Email */}
                                 <div>
 
                                     <label
@@ -595,20 +444,15 @@ const Login = () => {
                                             placeholder="you@example.com"
                                             value={formData.email}
                                             onChange={handleChange}
-                                            className={`
-flex - 1
+                                            className={`flex - 1
                                                 ${errors.email
                                                     ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
                                                     : ""
                                                 }
-`}
+                                            `}
                                         />
-
                                     </div>
-
-
                                     {errors.email && (
-
                                         <p
                                             className="
                                                 mt-1.5
@@ -622,11 +466,7 @@ flex - 1
                                     )}
 
                                 </div>
-
-
-                                {/* Password */}
                                 <div>
-
                                     <label
                                         htmlFor="password"
                                         className="
@@ -639,10 +479,7 @@ flex - 1
                                     >
                                         Password
                                     </label>
-
-
                                     <div className="flex items-center gap-3">
-
                                         <Lock
                                             size={18}
                                             className="
@@ -650,9 +487,7 @@ flex - 1
                                                 text-slate-400
                                             "
                                         />
-
                                         <div className="relative flex-1">
-
                                             <Input
                                                 id="password"
                                                 name="password"
@@ -673,9 +508,6 @@ pr - 10
                                                     }
 `}
                                             />
-
-
-                                            {/* Show / Hide Password */}
                                             <button
                                                 type="button"
                                                 onClick={() =>
@@ -768,9 +600,6 @@ pr - 10
                                     )}
 
                                 </div>
-
-
-                                {/* Sign In */}
                                 <Button
                                     type="submit"
                                     disabled={isLoading}
@@ -790,7 +619,6 @@ pr - 10
                                         hover:bg-[#E6AE00]
                                     "
                                 >
-
                                     {isLoading ? (
 
                                         <>
@@ -828,12 +656,6 @@ pr - 10
                                 </Button>
 
                             </form>
-
-
-                            {/* ---------------------------------
-                                Divider
-                            ---------------------------------- */}
-
                             <div className="my-7 flex items-center gap-4">
 
                                 <div className="h-px flex-1 bg-slate-200" />
@@ -849,13 +671,7 @@ pr - 10
                                 </span>
 
                                 <div className="h-px flex-1 bg-slate-200" />
-
                             </div>
-
-
-                            {/* ---------------------------------
-                                Register
-                            ---------------------------------- */}
 
                             <Button
                                 type="button"
@@ -880,13 +696,7 @@ pr - 10
                                 <UserPlus size={17} />
 
                                 Create an account
-
                             </Button>
-
-
-                            {/* ---------------------------------
-                                Terms
-                            ---------------------------------- */}
 
                             <p
                                 className="
@@ -911,9 +721,7 @@ pr - 10
                                 >
                                     Terms of Service
                                 </button>
-
                                 {" "}and{" "}
-
                                 <button
                                     type="button"
                                     className="
@@ -925,19 +733,18 @@ pr - 10
                                 >
                                     Privacy Policy
                                 </button>
-
                                 .
-
                             </p>
-
                         </div>
-
                     </div>
-
                 </Card>
-
             </div>
+            <RegisterUserModal
+                open={showRegisterModal}
+                onClose={() => setShowRegisterModal(false)}
+                onSuccess={() => setShowRegisterModal(false)}
 
+            />
         </div>
     );
 };

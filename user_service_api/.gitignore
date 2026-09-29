@@ -1,0 +1,126 @@
+# =========================
+# .NET / Visual Studio
+# =========================
+
+# Build output
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# =========================
+# .NET User Files
+# =========================
+
+*.rsuser
+*.nupkg
+*.snupkg
+
+# NuGet
+packages/
+*.nuget.props
+*.nuget.targets
+
+# =========================
+# Logs
+# =========================
+
+*.log
+logs/
+
+# =========================
+# Test Results
+# =========================
+
+TestResults/
+*.trx
+coverage/
+coverage.xml
+
+# =========================
+# ASP.NET Core
+# =========================
+
+# Local configuration
+appsettings.Development.json
+appsettings.Local.json
+
+# User secrets
+secrets.json
+
+# =========================
+# Entity Framework
+# =========================
+
+# Local database files
+*.db
+*.db-shm
+*.db-wal
+
+# SQL Server local database
+*.mdf
+*.ldf
+
+# =========================
+# OS Files
+# =========================
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+# =========================
+# Publish Output
+# =========================
+
+publish/
+wwwroot/dist/
+
+# =========================
+# Docker
+# =========================
+
+.dockerignore
+
+# =========================
+# Environment Variables
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+# Certificates / HTTPS
+# =========================
+
+*.pfx
+*.p12
+*.pem
+
+# =========================
+# Temporary Files
+# =========================
+
+*.tmp
+*.temp
+*.cache
+*.bak

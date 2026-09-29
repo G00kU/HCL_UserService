@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "./Pages/Login";
-import UserList from "./Pages/UserList";
-import Create from "./Components/User/FormControl";
 import AppLayout from "./Components/Layout/AppLayout";
-// import Edit from "./User/Edit";
+import UserList from "./Pages/User/UserList";
+import EditUser from "./Pages/User/EditUser";
+import AddUser from "./Pages/User/AddUser";
 
 const Router = () => {
     return (
@@ -26,21 +26,18 @@ const Router = () => {
                         />
                         <Route
                             path="add"
-                            element={<Create />}
+                            element={<AddUser />}
                         />
                         <Route
                             path="edit/:id"
-                            element={<Create />}
+                            element={<EditUser />}
                         />
                     </Route>
-
                 </Route>
-
                 <Route
                     path="*"
                     element={<Navigate to="/Login" replace />}
                 />
-
             </Routes>
         </BrowserRouter>
     );

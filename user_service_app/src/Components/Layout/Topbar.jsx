@@ -2,8 +2,10 @@ import {
     Bell,
     Search,
 } from "lucide-react";
+import useAuth from "../../Hooks/useAuth";
 
-const Topbar = ({ title = "Dashboard" }) => {
+const Topbar = ({ }) => {
+    const { user } = useAuth();
     return (
         <header
             className="
@@ -101,18 +103,14 @@ const Topbar = ({ title = "Dashboard" }) => {
                                 text-slate-900
                             "
                         >
-                            G
+                            {user?.name?.charAt(0).toUpperCase()}
                         </div>
 
 
                         {/* User Info */}
                         <div className="hidden sm:block">
                             <p className="text-sm font-medium text-slate-900">
-                                Gokul
-                            </p>
-
-                            <p className="text-xs text-slate-400">
-                                Administrator
+                                {user?.name}
                             </p>
                         </div>
 

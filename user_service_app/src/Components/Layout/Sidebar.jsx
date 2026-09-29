@@ -6,8 +6,10 @@ import {
     ChevronLeft,
     ChevronRight,
 } from "lucide-react";
+import useAuth from "../../Hooks/useAuth";
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
+    const { logout } = useAuth();
     return (
         <aside
             className={`
@@ -85,8 +87,6 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                     </div>
                 )}
             </div>
-
-            {/* Navigation */}
             <nav className="space-y-1 p-3">
                 <NavItem
                     icon={<Users size={19} />}
@@ -95,8 +95,6 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                     active
                 />
             </nav>
-
-            {/* Bottom Actions */}
             <div
                 className="
                     absolute
@@ -125,6 +123,9 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                         hover:text-red-600
                         ${collapsed ? "justify-center" : ""}
                     `}
+                    onClick={() => {
+                        logout();
+                    }}
                 >
                     <LogOut size={19} />
 

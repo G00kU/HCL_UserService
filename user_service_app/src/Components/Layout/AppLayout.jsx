@@ -9,17 +9,11 @@ const AppLayout = () => {
 
     return (
         <div className="min-h-screen bg-slate-50">
-
-            {/* Sidebar */}
             <Sidebar
                 collapsed={collapsed}
                 setCollapsed={setCollapsed}
             />
-
-            {/* Topbar */}
             <Topbar />
-
-            {/* Page Content */}
             <main
                 className={`
 min-h-screen
