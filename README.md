@@ -156,7 +156,22 @@ The React app is configured to call the API at:
 
 ## Authentication and Login
 
-The app uses JWT authentication.
+The app supports self-registration from the Login screen. Registration and login work as follows:
+
+1. On the Login screen, select **Create an account** and enter the user's details.
+2. The frontend submits the registration to `POST /api/User`. This endpoint allows anonymous access, so a JWT is not required to register.
+3. The API generates the initial password as `Name + Age` and stores its hash. No password is entered in the registration form.
+4. After registration succeeds, return to the Login screen and sign in with the registered email and generated password.
+5. On successful login, the API returns a JWT token and user details; the frontend stores the token for authenticated user-management requests.
+
+For example, a user registered with the name `Test User`, age `30`, and email `test.user@example.com` signs in with:
+
+```text
+Email: test.user@example.com
+Password: Test User30
+```
+
+The password is generated from the name and age exactly as registered. It is not the user's email address.
 
 ### Login endpoint
 
@@ -169,29 +184,10 @@ Example request:
 
 ```json
 {
-  "email": "gokul@gmail.com",
-  "password": "Gokul28"
+  "email": "test.user@example.com",
+  "password": "Test User30"
 }
 ```
-
-The current implementation generates a password hash using the pattern:
-
-```text
-Name + Age
-```
-
-For example, if a user is created with:
-
-- Name: `Gokul`
-- Age: `28`
-
-then the generated login password is:
-
-```text
-Gokul28
-```
-
-On successful login, the API returns a JWT token and the user details.
 
 ## API Endpoints
 
@@ -207,7 +203,7 @@ On successful login, the API returns a JWT token and the user details.
 | ------ | ------------------ | ------------------------- |
 | GET    | `/api/User`      | Get all users             |
 | GET    | `/api/User/{id}` | Get a specific user by ID |
-| POST   | `/api/User`      | Create a new user         |
+| POST   | `/api/User`      | Register a user (anonymous) |
 | PUT    | `/api/User/{id}` | Update a user             |
 | DELETE | `/api/User/{id}` | Delete a user             |
 
@@ -215,9 +211,9 @@ On successful login, the API returns a JWT token and the user details.
 
 ```json
 {
-  "name": "Gokul",
-  "email": "gokul@gmail.com",
-  "age": 28,
+  "name": "Test User",
+  "email": "test.user@example.com",
+  "age": 30,
   "city": "Chennai",
   "state": "Tamil Nadu",
   "pincode": "600001"
@@ -240,6 +236,47 @@ The React app includes these routes:
 3. On success, the app stores the JWT in session storage.
 4. The authenticated user can view and manage users.
 5. The frontend automatically attaches the token to API requests.
+
+## Docker Setup
+
+This application can be run with Docker Compose for both the ASP.NET API and React frontend.
+
+### Prerequisites
+
+- Docker Desktop or Docker Engine installed
+- Docker Compose enabled
+
+### Start the app with Docker Compose
+
+From the repository root:
+
+```bash
+docker compose up --build
+```
+
+### Access the app
+
+- Frontend: http://localhost:3000
+- API Swagger: http://localhost:8080/swagger
+
+### Stop the app
+
+```bash
+docker compose down
+```
+
+### Docker files included
+
+- `docker-compose.yml`
+- `user_service_api/Dockerfile`
+- `user_service_app/Dockerfile`
+- `user_service_app/nginx.conf`
+
+### Notes
+
+- The React frontend uses a runtime API URL fallback and does not require a local `.env` file.
+- The API container exposes port `8080` and serves the Swagger UI there.
+- SQLite data is stored in a Docker volume so it persists while the container is running.
 
 ## Running Tests
 

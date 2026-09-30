@@ -37,9 +37,9 @@ public class UserServiceTests
 
         var user = new UserEntity
         {
-            Name = "Gokul",
-            Email = "gokul@gmail.com",
-            Age = 28,
+            Name = "Test User",
+            Email = "test.user@example.com",
+            Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
             Pincode = "600001"
@@ -49,9 +49,9 @@ public class UserServiceTests
 
         result.Should().NotBeNull();
 
-        result.Name.Should().Be("Gokul");
-        result.Email.Should().Be("gokul@gmail.com");
-        result.Age.Should().Be(28);
+        result.Name.Should().Be("Test User");
+        result.Email.Should().Be("test.user@example.com");
+        result.Age.Should().Be(30);
         result.City.Should().Be("Chennai");
         result.State.Should().Be("Tamil Nadu");
         result.Pincode.Should().Be("600001");
@@ -71,9 +71,9 @@ public class UserServiceTests
 
         var user = new UserEntity
         {
-            Name = "Gokul",
-            Email = "gokul@gmail.com",
-            Age = 28,
+            Name = "Test User",
+            Email = "test.user@example.com",
+            Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
             Pincode = "600001"
@@ -88,7 +88,7 @@ public class UserServiceTests
 
         savedUser.PasswordHash
             .Should()
-            .NotBe("Gokul28");
+            .NotBe("Test User30");
     }
 
     [Fact]
@@ -98,9 +98,9 @@ public class UserServiceTests
 
         var existingUser = new UserEntity
         {
-            Name = "Existing User",
-            Email = "gokul@gmail.com",
-            Age = 28,
+            Name = "Test User",
+            Email = "test.user@example.com",
+            Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
             Pincode = "600001",
@@ -115,8 +115,8 @@ public class UserServiceTests
 
         var newUser = new UserEntity
         {
-            Name = "New User",
-            Email = "gokul@gmail.com",
+            Name = "Other Test User",
+            Email = "test.user@example.com",
             Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
@@ -139,9 +139,9 @@ public class UserServiceTests
         context.Users.AddRange(
             new UserEntity
             {
-                Name = "Gokul",
-                Email = "gokul@gmail.com",
-                Age = 28,
+                Name = "Test User",
+                Email = "test.user@example.com",
+                Age = 30,
                 City = "Chennai",
                 State = "Tamil Nadu",
                 Pincode = "600001",
@@ -149,8 +149,8 @@ public class UserServiceTests
             },
             new UserEntity
             {
-                Name = "John",
-                Email = "john@gmail.com",
+                Name = "Other Test User",
+                Email = "other.test.user@example.com",
                 Age = 30,
                 City = "Bangalore",
                 State = "Karnataka",
@@ -167,10 +167,10 @@ public class UserServiceTests
         result.Should().HaveCount(2);
 
         result.Should().Contain(x =>
-            x.Email == "gokul@gmail.com");
+            x.Email == "test.user@example.com");
 
         result.Should().Contain(x =>
-            x.Email == "john@gmail.com");
+            x.Email == "other.test.user@example.com");
     }
 
     [Fact]
@@ -181,9 +181,9 @@ public class UserServiceTests
 
         var user = new UserEntity
         {
-            Name = "Gokul",
-            Email = "gokul@gmail.com",
-            Age = 28,
+            Name = "Test User",
+            Email = "test.user@example.com",
+            Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
             Pincode = "600001",
@@ -200,9 +200,9 @@ public class UserServiceTests
         result.Should().NotBeNull();
 
         result!.Id.Should().Be(user.Id);
-        result.Name.Should().Be("Gokul");
-        result.Email.Should().Be("gokul@gmail.com");
-        result.Age.Should().Be(28);
+        result.Name.Should().Be("Test User");
+        result.Email.Should().Be("test.user@example.com");
+        result.Age.Should().Be(30);
     }
 
     [Fact]
@@ -225,9 +225,9 @@ public class UserServiceTests
 
         var user = new UserEntity
         {
-            Name = "Gokul",
-            Email = "gokul@gmail.com",
-            Age = 28,
+            Name = "Test User",
+            Email = "test.user@example.com",
+            Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
             Pincode = "600001",
@@ -240,8 +240,8 @@ public class UserServiceTests
 
         var service = CreateService(context);
 
-        user.Name = "Arun Kumar";
-        user.Age = 29;
+        user.Name = "Updated Test User";
+        user.Age = 31;
         user.City = "Coimbatore";
 
         var result =
@@ -249,16 +249,16 @@ public class UserServiceTests
 
         result.Should().NotBeNull();
 
-        result!.Name.Should().Be("Arun Kumar");
-        result.Age.Should().Be(29);
+        result!.Name.Should().Be("Updated Test User");
+        result.Age.Should().Be(31);
         result.City.Should().Be("Coimbatore");
 
         var databaseUser =
             await context.Users.FindAsync(user.Id);
 
         databaseUser.Should().NotBeNull();
-        databaseUser!.Name.Should().Be("Arun Kumar");
-        databaseUser.Age.Should().Be(29);
+        databaseUser!.Name.Should().Be("Updated Test User");
+        databaseUser.Age.Should().Be(31);
         databaseUser.City.Should().Be("Coimbatore");
     }
 
@@ -271,9 +271,9 @@ public class UserServiceTests
 
         var user = new UserEntity
         {
-            Name = "Gokul",
-            Email = "gokul@gmail.com",
-            Age = 28,
+            Name = "Test User",
+            Email = "test.user@example.com",
+            Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
             Pincode = "600001",
@@ -302,9 +302,9 @@ public class UserServiceTests
 
         var user1 = new UserEntity
         {
-            Name = "Gokul",
-            Email = "gokul@gmail.com",
-            Age = 28,
+            Name = "Test User",
+            Email = "test.user@example.com",
+            Age = 30,
             City = "Chennai",
             State = "Tamil Nadu",
             Pincode = "600001",
@@ -313,8 +313,8 @@ public class UserServiceTests
 
         var user2 = new UserEntity
         {
-            Name = "John",
-            Email = "john@gmail.com",
+            Name = "Other Test User",
+            Email = "other.test.user@example.com",
             Age = 30,
             City = "Bangalore",
             State = "Karnataka",
@@ -333,6 +333,6 @@ public class UserServiceTests
         var remainingUser =
             await context.Users.FindAsync(user2.Id);
         remainingUser.Should().NotBeNull();
-        remainingUser!.Email.Should().Be("john@gmail.com");
+        remainingUser!.Email.Should().Be("other.test.user@example.com");
     }
 }

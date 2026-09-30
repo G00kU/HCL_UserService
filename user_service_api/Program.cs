@@ -14,7 +14,7 @@ var jwtSettings = builder.Configuration.GetSection("Jwt");
 builder.Services.AddDbContext<UserContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("UserContext") ?? throw new InvalidOperationException("Connection string 'UserContext' not found.")));
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPasswordHasher<UserEntity>,PasswordHasher<UserEntity>>();
+builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -53,6 +53,12 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddAuthorization();
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<UserContext>();
+    dbContext.Database.Migrate();
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -61,6 +67,11 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseHttpsRedirection();
+
+if (!app.Environment.IsEnvironment("Docker"))
+{
+    app.UseHttpsRedirection();
+}
+
 app.MapControllers();
 app.Run();

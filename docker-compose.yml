@@ -1,0 +1,31 @@
+services:
+  api:
+    build:
+      context: ./user_service_api
+      dockerfile: Dockerfile
+    container_name: user-service-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__UserContext: Data Source=/data/app.db
+      Jwt__Key: user-service-api_key12345678901234567890
+      Jwt__Issuer: user-service-api
+      Jwt__Audience: user-service-client
+      Jwt__ExpiryMinutes: "60"
+    ports:
+      - "8080:8080"
+    volumes:
+      - sqlite_data:/data
+
+  app:
+    build:
+      context: ./user_service_app
+      dockerfile: Dockerfile
+    container_name: user-service-app
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  sqlite_data:
