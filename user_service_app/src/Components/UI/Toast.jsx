@@ -1,5 +1,5 @@
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
     CheckCircle2,
     XCircle,
@@ -83,6 +83,25 @@ const Toast = ({ toast, onClose }) => {
 
 export const ToastProvider = ({ children }) => {
     const [toast, setToast] = useState(null);
+
+    useEffect(() => {
+        let timeoutId;
+        const handleApiServerDown = () => {
+            setToast({
+                type: "error",
+                message: "API Server Down",
+                duration: 5000,
+            });
+            window.clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(() => setToast(null), 5000);
+        };
+
+        window.addEventListener("api-server-down", handleApiServerDown);
+        return () => {
+            window.removeEventListener("api-server-down", handleApiServerDown);
+            window.clearTimeout(timeoutId);
+        };
+    }, []);
 
     const showToast = (type, message, duration = 3000) => {
         setToast({

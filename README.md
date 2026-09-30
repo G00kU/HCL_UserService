@@ -44,6 +44,11 @@ This repository contains:
 - FluentAssertions
 - EF Core InMemory database
 
+### AI Tools
+
+- ChatGPT
+- OpenAI Codex
+
 ## Project Structure
 
 ```text
@@ -307,9 +312,6 @@ The tests cover:
 - If Swagger does not load, check that the API started without build errors.
 - If login fails, verify the correct email and password format match the created user record.
 
-## License
-
-This repository is intended for learning, project-based development, and demonstration within the workspace environment.
 
 - CORS is enabled in the API to allow the React app to communicate with the backend.
 - The current project uses SQLite for ease of local development and quick setup.

@@ -4,8 +4,12 @@ const isLocalhost =
   typeof window !== "undefined" &&
   ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
+const baseURL =
+  process.env.REACT_APP_API_URL ||
+  (isLocalhost ? "https://localhost:7200/api" : "/api");
+
 const api = axios.create({
-  baseURL: isLocalhost ? "http://localhost:8080/api" : "/api",
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -28,7 +32,10 @@ api.interceptors.response.use(
 
   (error) => {
     const requestUrl = error.config?.url;
-    debugger;
+    if (!error.response && !axios.isCancel(error)) {
+      window.dispatchEvent(new Event("api-server-down"));
+    }
+
     if (
       error.response?.status === 401 &&
       !requestUrl?.includes("/Auth/login")
